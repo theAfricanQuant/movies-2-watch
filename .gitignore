@@ -1,0 +1,11 @@
+# VS Code
+.vscode
+
+# Cache
+__pycache__
+
+# Databases
+*.db 
+
+# Config.py
+config.py

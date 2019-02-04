@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="mt-5 mb-5">Add a New Movie</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{category}}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+            
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <form action="" method="post" class="form-inline">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.search.label(class="form-control-label mr-2") }}
+                    {% if form.search.errors %}
+                        {{ form.search(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.search.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.search(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>     
+                
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info ml-2") }}
+                </div>
+            </form> 
+        </div>
+    </div> 
+
+    <div class="row">
+        <div class="col mb-3">
+            <h3>Results</h3>
+        </div>
+    </div>
+
+    {% for movie in results %}
+        <div class="row pt-3">
+            <div class="col-1 ">
+                <img src="{{ movie.poster }}" alt="" class="img-fluid" style="height:100px">
+            </div>
+            <div class="col-10">
+                <h4>{{ movie.title }} ({{ movie.year }})</h4>
+                <p>{{ movie.plot }}</p>
+            </div>
+            <div class="col-1">
+                <form action="{{ url_for('add_from_search') }}" method="post" role="addform">
+                    <input type="hidden" value="{{ movie.title }}" name="title">
+                    <input type="hidden" value="{{ movie.year }}" name="year_released">
+                    <button type="submit" class="btn btn-success">Add</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
