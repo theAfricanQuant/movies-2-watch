@@ -14,14 +14,12 @@ class RegistrationForm(FlaskForm):
 
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
+        if user := User.query.filter_by(username=username.data).first():
             raise ValidationError('That username is already taken')
 
 
     def validate_email(self, email):
-        email = User.query.filter_by(email=email.data).first()
-        if email:
+        if email := User.query.filter_by(email=email.data).first():
             raise ValidationError('That email is already in use')
 
 
